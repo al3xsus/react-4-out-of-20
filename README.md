@@ -1,4 +1,4 @@
-#4x20
+# 4x20
 
 Лотерея 4 из 20. Написана на чистом React + Semantic-UI-React + css.
 
