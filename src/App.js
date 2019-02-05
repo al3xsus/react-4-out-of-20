@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import "./App.css";
 import { Modal } from "semantic-ui-react";
 import Content from './Content'
-import Testing from './Testing'
 
 class App extends Component {
 

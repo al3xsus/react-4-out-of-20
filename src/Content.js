@@ -6,9 +6,10 @@ import {
   Table,
   Segment,
   Dropdown,
-  Button
+  Button,
+  Icon
 } from "semantic-ui-react";
-import ResultTable from "./ResultTable";
+import { returnCombinations, checkTickets } from "./AuxFn";
 
 class Content extends Component {
   defaultState = {
@@ -28,7 +29,6 @@ class Content extends Component {
     newState.panes.push(this.returnPane(1));
     newState.tickets.push({ id: 1, left: [], right: [] });
     this.setState(newState);
-    console.log(this.teest(4, 4));
   }
 
   handleAddPane = () => {
@@ -44,8 +44,8 @@ class Content extends Component {
     const { tickets } = this.state;
     const ticketIndex = tickets.findIndex(x => x.id === parseInt(ticket_id));
     const btnIndex = tickets[ticketIndex][panel].findIndex(x => x === id);
-    if (btnIndex === -1) return "white";
-    else return "green";
+    if (btnIndex === -1) return "lightyellow";
+    else return "lightgreen";
   };
 
   generateSimple = (ticket_id, panel) => {
@@ -135,21 +135,44 @@ class Content extends Component {
                 {this.generateSimple(pane_id, "right")}
               </div>
             </Form.Group>
-            <Button onClick={() => this.handleRandom(pane_id)}>Случайно</Button>
-            <Button onClick={() => this.handleClear(pane_id)}>Очистить</Button>
+            <Form.Field style={{ textAlign: "center", marginRight: "25px" }}>
+              <p>
+                Отметьте не менее 4 чисел в каждом поле. Стоимость каждого
+                билета - 100 рублей
+              </p>
+            </Form.Field>
+            <Button
+              color={"yellow"}
+              basic={true}
+              floated={"left"}
+              icon={"random"}
+              onClick={() => this.handleRandom(pane_id)}
+              content={"Случайно"}
+            />
+            <Button
+              color={"red"}
+              icon={'remove'}
+              basic={true}
+              floated={"right"}
+              style={{ marginRight: "25px" }}
+              onClick={() => this.handleClear(pane_id)}
+              content={"Очистить"}
+            />
+            <br />
+            <br />
           </Form>
         </Tab.Pane>
       )
     };
   };
 
-  onDrawChange = (e, { value }) => {
+  handleDrawChange = (e, { value }) => {
     const newState = { ...this.state };
     newState.draw = value;
     this.setState(newState);
   };
 
-  onDropAll = () => {
+  handleDropAll = () => {
     const newState = this.defaultState;
     newState.panes = [this.returnPane(1)];
     newState.tickets = [{ id: 1, left: [], right: [] }];
@@ -159,59 +182,11 @@ class Content extends Component {
 
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
 
-  teest = (n, k) => {
-    const factorial = n => {
-      return n === 1 ? n : n * factorial(--n);
-    };
-
-    const combinations = (n, r) => {
-      if (n === r) return 1;
-      else return factorial(n) / (factorial(r) * factorial(n - r));
-    };
-
-    return combinations(n, k);
-  };
-
-  returnCombinations = tickets => {
-    const factorial = n => {
-      return n === 1 ? n : n * factorial(--n);
-    };
-
-    const combinations = (n, r) => {
-      if (n === r) return 1;
-      else return factorial(n) / (factorial(r) * factorial(n - r));
-    };
-
-    let result = 0;
-    tickets.forEach(ticket => {
-      if (ticket.left.length >= 4 && ticket.right.length >= 4) {
-        console.log(ticket.left.length, ticket.right.length);
-        result =
-          result +
-          combinations(ticket.left.length, 4) *
-            combinations(ticket.right.length, 4);
-      }
-    });
-    return result;
-  };
-
-  checkTickets = tickets => {
-    console.log(tickets);
-    let result = 0;
-    tickets.forEach(ticket => {
-      if (ticket.left.length >= 4 && ticket.right.length >= 4) {
-        result = result + 1;
-      }
-    });
-    return result;
-  };
-
   render() {
     const { panes, tickets, draw, activeIndex } = this.state;
-    console.log(this.state);
-    let combinations = this.returnCombinations(tickets);
-    let price = combinations * draw * 200;
-    let ticketsNum = this.checkTickets(tickets);
+    let combinations = returnCombinations(tickets);
+    let price = combinations * draw * 100;
+    let ticketsNum = checkTickets(tickets);
     const options = [...Array(5)].map((_, i) => {
       return { key: i + 1, text: i + 1, value: i + 1 };
     });
@@ -252,7 +227,7 @@ class Content extends Component {
                         selection
                         options={options}
                         value={draw}
-                        onChange={this.onDrawChange}
+                        onChange={this.handleDrawChange}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -267,9 +242,11 @@ class Content extends Component {
                 </Table.Body>
                 <Table.Footer>
                   <Table.Row>
-                    <Table.HeaderCell>Сумма</Table.HeaderCell>
+                    <Table.HeaderCell>
+                      <h4>Сумма</h4>
+                    </Table.HeaderCell>
                     <Table.HeaderCell textAlign={"right"}>
-                      {price}
+                      <h4>{price}</h4>
                     </Table.HeaderCell>
                   </Table.Row>
                   <Table.Row>
@@ -284,20 +261,25 @@ class Content extends Component {
                   <Table.Row>
                     <Table.HeaderCell>
                       <Button
-                          icon={"plus"}
-                          color={"green"}
-                          onClick={this.handleAddPane}
-                          basic={true}
-                          content={"Добавить билет"}
-                      />
+                        animated={true}
+                        color={"green"}
+                        onClick={this.handleAddPane}
+                        basic={true}
+                      >
+                        <Button.Content visible>
+                          <Icon name={"plus"} /> Добавить
+                        </Button.Content>
+                        <Button.Content hidden>+ 1 билет</Button.Content>
+                      </Button>
                     </Table.HeaderCell>
                     <Table.HeaderCell textAlign={"right"}>
                       <Button
-                          color={"grey"}
-                          onClick={this.onDropAll}
-                          basic={true}
-                          content={"Сбросить всё"}
-                          style={{ float: "right" }}
+                        color={"red"}
+                        icon={'refresh'}
+                        onClick={this.handleDropAll}
+                        basic={true}
+                        content={"Сбросить всё"}
+                        style={{ float: "right" }}
                       />
                     </Table.HeaderCell>
                   </Table.Row>
