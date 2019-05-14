@@ -1,3 +1,5 @@
+import React from "react";
+
 export const returnCombinations = tickets => {
     const factorial = n => {
         return n === 1 ? n : n * factorial(--n);
@@ -28,4 +30,11 @@ export const checkTickets = tickets => {
         }
     });
     return result;
+};
+
+export const checkColor = (tickets, ticket_id, panel, id) => {
+    const ticketIndex = tickets.findIndex(x => x.id === parseInt(ticket_id));
+    const btnIndex = tickets[ticketIndex][panel].findIndex(x => x === id);
+    if (btnIndex === -1) return "lightyellow";
+    else return "lightgreen";
 };

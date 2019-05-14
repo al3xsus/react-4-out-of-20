@@ -9,7 +9,7 @@ import {
   Button,
   Icon
 } from "semantic-ui-react";
-import { returnCombinations, checkTickets } from "./AuxFn";
+import { returnCombinations, checkTickets, checkColor } from "./AuxFn";
 
 class Content extends Component {
   defaultState = {
@@ -40,25 +40,13 @@ class Content extends Component {
     this.setState(newState);
   };
 
-  checkColor = (ticket_id, panel, id) => {
-    const { tickets } = this.state;
-    const ticketIndex = tickets.findIndex(x => x.id === parseInt(ticket_id));
-    const btnIndex = tickets[ticketIndex][panel].findIndex(x => x === id);
-    if (btnIndex === -1) return "lightyellow";
-    else return "lightgreen";
-  };
-
   generateSimple = (ticket_id, panel) => {
     const generateSimpleDev = param => {
       let newArray = Array.from(Array(4).keys());
       return newArray.map(item => (
         <button
           style={{
-            backgroundColor: this.checkColor(
-              ticket_id,
-              panel,
-              4 * param + (item + 1)
-            )
+            backgroundColor: checkColor(this.state.tickets, ticket_id, panel, 4 * param + (item + 1))
           }}
           className={"game"}
           key={4 * param + (item + 1)}
