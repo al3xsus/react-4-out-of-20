@@ -1,8 +1,34 @@
 {
   "name": "react-4x20",
   "version": "0.1.0",
+  "author": {
+    "name": "Alexandr Lavrentyev",
+    "email": "al3xsus@pm.me"
+  },
+  "contributors": [
+    {
+      "name": "Alexandr Lavrentyev",
+      "email": "al3xsus@pm.me"
+    }
+  ],
+  "homepage": "https://al3xsus.github.io/react-4-out-of-20/",
+  "license": "MIT",
+  "keywords": [
+    "spa",
+    "4-out-of-20",
+    "react",
+    "semantic-ui-react",
+    "mockup",
+    "lottery"
+  ],
+  "description": "A simple SPA emulate lottery ticket for 4-out-of-20 game",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/al3xsus/react-4-out-of-20"
+  },
   "private": true,
   "dependencies": {
+    "gh-pages": "^2.2.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3",

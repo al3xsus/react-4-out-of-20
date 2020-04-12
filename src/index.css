@@ -32,11 +32,12 @@ div.main {
   text-align: center;
 }
 
-.wrapped{
+.wrapped {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-.ui.table tr td { border-top: 0 !important; }
-
+.ui.table tr td {
+  border-top: 0 !important;
+}

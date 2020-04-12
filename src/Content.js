@@ -46,7 +46,12 @@ class Content extends Component {
       return newArray.map(item => (
         <button
           style={{
-            backgroundColor: checkColor(this.state.tickets, ticket_id, panel, 4 * param + (item + 1))
+            backgroundColor: checkColor(
+              this.state.tickets,
+              ticket_id,
+              panel,
+              4 * param + (item + 1)
+            )
           }}
           className={"game"}
           key={4 * param + (item + 1)}
@@ -139,7 +144,7 @@ class Content extends Component {
             />
             <Button
               color={"red"}
-              icon={'remove'}
+              icon={"remove"}
               basic={true}
               floated={"right"}
               style={{ marginRight: "25px" }}
@@ -263,7 +268,7 @@ class Content extends Component {
                     <Table.HeaderCell textAlign={"right"}>
                       <Button
                         color={"red"}
-                        icon={'refresh'}
+                        icon={"refresh"}
                         onClick={this.handleDropAll}
                         basic={true}
                         content={"Сбросить всё"}
